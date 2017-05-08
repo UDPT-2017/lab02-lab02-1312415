@@ -26,6 +26,12 @@ var User = sequelize.define('user', {
                 args: false,
                 msg: 'Must have phone number '
             },
+            validate: {
+                len: {
+                    args: [1],
+                    msg: 'Must have a phone number'
+                }
+            }
         },
         name: {
             type: SQ.STRING,

@@ -1,4 +1,5 @@
 module.exports = {
     index: require('./indexController'),
-    user: require('./userController')
+    user: require('./userController'),
+    about: require('./aboutController')
 };

@@ -38,10 +38,11 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li id="index"><a href="/">Home</a></li>
+                    <li id="about"><a href="/about">About</a></li>
                 </ul>
                 {{#if session }}
                     <ul class="nav navbar-nav navbar-right">
-                        <form id="form-logout" action="user/logout" method="post">
+                        <form id="form-logout" action="/user/logout" method="post">
                             <img src="{{session.avatar}}" class="small-avatar">
                             <label
                                     style="color: azure">{{session.name}}</label>
@@ -66,7 +67,7 @@
     </nav>
 
     <div>
-        <div class="md-col-8 offset-md-2">
+        <div class="col-md-10 col-md-offset-1">
             {{#each messages.info}}
                 <b>{{this}}</b> <br>
             {{/each}}

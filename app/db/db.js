@@ -2,7 +2,7 @@
 const User = require('../models/User');
 
 
-User.sync({ force: true }).then(function () {
+User.sync().then(function () {
 
 });
 module.exports = {
