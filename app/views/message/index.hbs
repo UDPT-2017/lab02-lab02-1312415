@@ -1,0 +1,39 @@
+<script>
+
+</script>
+<button class="btn btn-success col-md-12" onclick="Reload()">
+    Reload
+</button>
+<br> <br>
+<a class="btn btn-success col-md-12" href="/message/new">
+    add a new message
+</a>
+<div class=" col-md-12" id="messageList">
+</div>
+
+<script>
+    function Reload() {
+        var $message = $('#messageList');
+        $message.empty();
+        $.ajax({
+            url: 'http://localhost:3000/message/get' + '?userId=' + {{session.id}},
+            dataType: "json",
+            cache: false,
+            async: false,
+            success: function (messages) {
+                $.each(messages, function (i, message) {
+                    if(message.seen){
+                        a = `<a href="/message/${message.id}" class="list-group-item ">    Title: ${message.title} <b>from</b> ${message.from.name} | Create at: ${message.createdAt}</a>`
+                    }else{
+                        a = `<a href="/message/${message.id}" class="list-group-item list-group-item-info">    Title: ${message.title} <b>from</b> ${message.from.name} | Create at: ${message.createdAt}</a>`
+                    }
+                    $message.append(a);
+                })
+            }
+
+        });
+    }
+    $(function () {
+        Reload();
+    });
+</script>
