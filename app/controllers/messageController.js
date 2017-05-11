@@ -1,19 +1,29 @@
 const Message = require('../db/db').Message;
 const User = require('../db/db').User;
 const _ = require('lodash');
+const showdown  = require('showdown');
+const converter = new showdown.Converter();
 
 var messageController = {
     show: function (req, res) {
         Message.findOne({
-                where:{id: req.params.id},
-                include:[{
-                    model: User,
-                    as: "from"
-                }]
-            }).then(function (message) {
+            where: {id: req.params.id},
+            include: [{
+                model: User,
+                as: "from"
+            }]
+        }).then(function (message) {
+            if(message.from.id !== req.user.id)
+            {
+                message.seen = true;
+            }
+            return message.save();
+        }).then(function (message) {
+            var html = converter.makeHtml(message.content);
             res.render('message/show', {
                 message: message,
-                page: 'message'
+                page: 'message',
+                html: html
             })
         })
 
@@ -36,13 +46,14 @@ var messageController = {
                     res.redirect('/message/new');
                     return;
                 }
-                if(user.id === req.user.id){
+                if (user.id === req.user.id) {
                     req.flash('info', "can't send message to yourself");
                     res.redirect('/message/new');
                     return;
                 }
-                var body = _.pick(req.body, ['title', 'content', 'userId']);
+                var body = _.pick(req.body, ['title', 'content']);
                 var message = Message.build(body);
+                message.userId = req.user.id;
                 message.toUserId = user.id;
                 return message.save();
             })
@@ -52,22 +63,58 @@ var messageController = {
             })
             .catch(function (e) {
                 console.log(e);
-            for (var i = 0; i < e.errors.length; i++) {
-                req.flash('info', e.errors[i].message);
-            }
+                for (var i = 0; i < e.errors.length; i++) {
+                    req.flash('info', e.errors[i].message);
+                }
 
-            res.redirect('/message/new');
-        });
+                res.redirect('/message/new');
+            });
     },
     getMessage: function (req, res) {
-        Message.findAll({
-            where: {toUserId: req.query.userId},
-            include: [{model: User, as: "from"}, {model: User, as: "to"}]
-        }).then(function (messages) {
-            if (req.user.id === parseInt(req.query.userId)) {
+        if(req.query.All === "true"){
+            Message.findAll({
+                where: {toUserId: req.user.id},
+                include: [{model: User, as: "from"}, {model: User, as: "to"}],
+                order: [ [ 'createdAt', 'DESC' ] ],
+                limit: parseInt(req.query.number)
+            }).then(function (messages) {
                 res.send(messages);
-            }
-        })
+            })
+        }
+        else{
+            Message.findAll({
+                where: {toUserId: req.user.id},
+                include: [{model: User, as: "from"}, {model: User, as: "to"}],
+                order: [ [ 'createdAt', 'DESC' ] ],
+                limit: 10,
+                offset: parseInt(req.query.number)
+            }).then(function (messages) {
+                res.send(messages);
+            })
+        }
+
+    },
+    sentMessage: function (req, res) {
+        if(req.query.All === "true"){
+            Message.findAll({
+                where: {userId: req.user.id},
+                include: [{model: User, as: "from"}, {model: User, as: "to"}],
+                order: [ [ 'createdAt', 'DESC' ] ],
+                limit: parseInt(req.query.number)
+            }).then(function (messages) {
+                res.send(messages);
+            })
+        }else {
+            Message.findAll({
+                where: {userId: req.user.id},
+                include: [{model: User, as: "from"}, {model: User, as: "to"}],
+                order: [ [ 'createdAt', 'DESC' ] ],
+                limit: 10,
+                offset: parseInt(req.query.number)
+            }).then(function (messages) {
+                res.send(messages);
+            })
+        }
     }
 };
 

@@ -1,39 +1,170 @@
-<script>
-
-</script>
-<button class="btn btn-success col-md-12" onclick="Reload()">
-    Reload
+<button class="btn btn-success col-md-12" onclick="Refresh()">
+    Refresh
 </button>
 <br> <br>
 <a class="btn btn-success col-md-12" href="/message/new">
     add a new message
 </a>
-<div class=" col-md-12" id="messageList">
+<br> <br>
+<button class="btn btn-success col-md-6" onclick="SentMessage()">
+    Sent
+</button>
+<button class="btn btn-success col-md-6" onclick="Receive()">
+    Received
+</button>
+<div id="last-refresh">
+
 </div>
 
+<div class=" col-md-12" id="messageList">
+</div>
+<button class="btn btn-information col-md-12" id="paginate" onclick="Add10Message()">
+    Add 10 message
+</button>
+
 <script>
-    function Reload() {
+    var Check = "R";
+    var SentPaginate = 10;
+    var ReceivePaginate = 0;
+    var $paginate = document.getElementById('paginate');
+    function Refresh() {
+        if (Check === "R") {
+            Receive();
+        } else {
+            SentMessage();
+        }
+    }
+    function pad(val) {
+        return val > 9 ? val : "0" + val;
+    }
+    function CountUp() {
+        var sec = 0;
+        setInterval(function () {
+            var a = pad(++sec % 60);
+            var b = pad(parseInt(sec / 60, 10));
+            $('#last-refresh').html("last refresh is " + b + ":" + a + " ago");
+        }, 1000);
+        setInterval(function () {
+            Refresh();
+            sec = 0;
+        }, 5000);
+    }
+
+    function Receive() {
+        Check = 'R';
         var $message = $('#messageList');
         $message.empty();
         $.ajax({
-            url: 'http://localhost:3000/message/get' + '?userId=' + {{session.id}},
+            url: 'http://localhost:3000/message/get?number=' + ReceivePaginate + '&&All=true',
             dataType: "json",
             cache: false,
             async: false,
             success: function (messages) {
                 $.each(messages, function (i, message) {
-                    if(message.seen){
+                    if (message.seen) {
                         a = `<a href="/message/${message.id}" class="list-group-item ">    Title: ${message.title} <b>from</b> ${message.from.name} | Create at: ${message.createdAt}</a>`
-                    }else{
+                    } else {
                         a = `<a href="/message/${message.id}" class="list-group-item list-group-item-info">    Title: ${message.title} <b>from</b> ${message.from.name} | Create at: ${message.createdAt}</a>`
                     }
                     $message.append(a);
-                })
+                });
+
             }
 
         });
     }
+    function SentMessage() {
+        waypoint.destroy();AutoLoad10();
+        Check = 'S';
+        var $message = $('#messageList');
+        $message.empty();
+        $.ajax({
+            url: 'http://localhost:3000/message/sent?number=' + SentPaginate + '&&All=true',
+            dataType: "json",
+            cache: false,
+            async: false,
+            success: function (messages) {
+                $.each(messages, function (i, message) {
+                    var a;
+                    if (message.createdAt === message.updatedAt) {
+                        a = `<a href="/message/${message.id}" class="list-group-item list-group-item-info">    Title: ${message.title} <b>to</b> ${message.to.name} </a>`
+                    } else {
+                        a = `<a href="/message/${message.id}" class="list-group-item ">    Title: ${message.title} <b>to</b> ${message.to.name} | Read at: ${message.createdAt}</a>`
+                    }
+                    $message.append(a);
+                });
+            }
+
+        });
+    }
+    function AddReceive10() {
+        var $message = $('#messageList');
+        $.ajax({
+            url: 'http://localhost:3000/message/get?number=' + ReceivePaginate,
+            dataType: "json",
+            cache: false,
+            async: false,
+            success: function (messages) {
+                $.each(messages, function (i, message) {
+                    if (message.seen) {
+                        a = `<a href="/message/${message.id}" class="list-group-item ">    Title: ${message.title} <b>from</b> ${message.from.name} | Create at: ${message.createdAt}</a>`
+                    } else {
+                        a = `<a href="/message/${message.id}" class="list-group-item list-group-item-info">    Title: ${message.title} <b>from</b> ${message.from.name} | Create at: ${message.createdAt}</a>`
+                    }
+                    $message.append(a);
+                });
+                ReceivePaginate += 10;
+            }
+
+        });
+    }
+    function AddSentMessage10() {
+        var $message = $('#messageList');
+        $.ajax({
+            url: 'http://localhost:3000/message/sent?number=' + SentPaginate,
+            dataType: "json",
+            cache: false,
+            async: false,
+            success: function (messages) {
+                $.each(messages, function (i, message) {
+                    var a;
+                    if (message.createdAt === message.updatedAt) {
+                        a = `<a href="/message/${message.id}" class="list-group-item list-group-item-info">    Title: ${message.title} <b>to</b> ${message.to.name} </a>`
+                    } else {
+                        a = `<a href="/message/${message.id}" class="list-group-item ">    Title: ${message.title} <b>to</b> ${message.to.name} | Read at: ${message.createdAt}</a>`
+                    }
+                    $message.append(a);
+                });
+                SentPaginate += 10;
+            }
+
+        });
+    }
+    function Add10Message() {
+        if (Check === "R") {
+            AddReceive10();
+        } else {
+            AddSentMessage10();
+        }
+    }
+    function AutoLoad10() {
+        waypoint = new Waypoint({
+            element: document.getElementById('paginate'),
+            handler: function (direction) {
+                if (direction === "down") {
+                    Add10Message();
+                    waypoint.destroy();
+                    AutoLoad10();
+                }
+
+            },
+            offset: '90%'
+        });
+    }
     $(function () {
-        Reload();
+        AutoLoad10();
+        Receive();
+        CountUp();
+
     });
 </script>

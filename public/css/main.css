@@ -1,4 +1,15 @@
 .small-avatar{
     height: 30px;
     width: 30px;
+    margin-right: 10px;
+}
+.nav.navbar-nav.navbar-right{
+    margin-top: 5px;
+}
+#map {
+    height: 200px;
+    width: 100%;
+}
+.footer-bottom{
+    margin-top: 50px;
 }

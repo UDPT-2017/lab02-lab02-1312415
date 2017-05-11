@@ -1,1 +1,26 @@
-<h1>About</h1>
+<h3>ABOUT</h3>
+<p>
+    <img src="https://raw.githubusercontent.com/UDPT-2017/lab01-1312415-1312420/master/public/picture/1312415.jpg" alt="" class="my-avatar">
+    Tên: Trần Thanh Phán, MSSV:1312415
+</p>
+<h4>Địa chỉ</h4>
+<div id="map"></div>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCv1tm_Z5PsIF88s0sqVM-vbKxyYsVxy64&callback=initMap">
+</script>
+<script>
+    function initMap() {
+        var uluru = {lat: 10.763460, lng: 106.677659};
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 4,
+            center: uluru
+        });
+        var marker = new google.maps.Marker({
+            position: uluru,
+            map: map
+        });
+    }
+</script>
+<br>
+<br>
+<br>

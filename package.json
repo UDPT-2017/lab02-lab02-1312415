@@ -24,6 +24,7 @@
     "passport-local": "^1.0.0",
     "pg": "^6.1.5",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^3.30.4"
+    "sequelize": "^3.30.4",
+    "showdown": "^1.6.4"
   }
 }

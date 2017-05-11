@@ -1,6 +1,7 @@
 var Strategy = require('passport-local').Strategy;
 const SaltAndHash = require('../config/password');
 const User = require('../app/db/db').User;
+const Friend = require('../app/db/db').Friend;
 const passport = require('passport');
 
 passport.serializeUser(function (user, done) {
@@ -9,7 +10,7 @@ passport.serializeUser(function (user, done) {
 
 // used to deserialize the user
 passport.deserializeUser(function (id, done) {
-    User.findById(id).then(function (user) {
+    User.find({where: {id: id}, include: [{as: "friends", model: Friend, include:[{model:User, as:"to"}]}]}).then(function (user) {
         done(null, user);
     }, function (err, user) {
         done(err, user);

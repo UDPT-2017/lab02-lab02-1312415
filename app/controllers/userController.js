@@ -46,13 +46,11 @@ var userController = {
         });
     },
     login: function (req, res) {
-        res.redirect('/');
-        res.redirect(req.get('referer'));
+        res.redirect('/message');
     },
     logout: function(req,res){
         req.logout();
-        res.redirect('/');
-        res.redirect(req.get('referer'));
+        res.redirect('/message');
     }
 };
 

@@ -3,7 +3,11 @@
     <div class="form-group">
         <label for="inputTo" class="control-label col-xs-2">To</label>
         <div class="col-xs-8">
-            <input name="to" type="text" class="form-control" id="inputTo" placeholder="email user">
+            <select name="to" class="form-control">
+                {{#each session.friends}}
+                    <option value="{{this.to.email}}">{{this.to.email}}</option>
+                {{/each}}
+            </select>
         </div>
     </div>
     <div class="form-group">
@@ -15,10 +19,9 @@
     <div class="form-group">
         <label for="inputContent" class="control-label col-xs-2">Text</label>
         <div class="col-xs-8">
-            <input name="content" type="text" class="form-control" id="inputContent" placeholder="Your message">
+            <textarea name="content" type="text" class="form-control" id="inputContent" placeholder="Your message"></textarea>
         </div>
     </div>
-    <input type="hidden" name="userId" value="{{session.id}}">
     <div class="form-group">
         <div class="col-xs-offset-4 col-xs-10">
             <button type="submit" class="btn btn-success">Submit</button>

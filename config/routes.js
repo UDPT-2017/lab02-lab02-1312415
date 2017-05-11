@@ -6,7 +6,11 @@ const Authentication = require('../config/authencation');
 const multipartMiddleware = multipart();
 
 module.exports = function(app){
-
+    var friendRouter = Router()
+        .get('/add', controllers.friend.addFriend)
+        .get('/remove', controllers.friend.removeFriend)
+        .get('/get', controllers.friend.getFriend)
+        .get('/', controllers.friend.index);
     var indexRouter = Router()
         .get('/', controllers.index.index);
 
@@ -23,6 +27,7 @@ module.exports = function(app){
     var messageRouter = Router()
         .get('/', controllers.message.index)
         .get('/get', controllers.message.getMessage)
+        .get('/sent', controllers.message.sentMessage)
         .get('/new', controllers.message.newMessage)
         .post('/new',controllers.message.createMessage)
         .get('/:id', controllers.message.show);
@@ -31,4 +36,5 @@ module.exports = function(app){
     app.use('/user', userRouter);
     app.use('/about', Authentication, aboutRouter);
     app.use('/message', Authentication, messageRouter);
+    app.use('/friend', Authentication, friendRouter);
 };

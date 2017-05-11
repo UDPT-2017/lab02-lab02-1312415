@@ -20,8 +20,7 @@ var Message = sequelize.define('message', {
                     msg: 'Must have content and longer than 10 letters'
                 }
             }
-        }
-        ,
+        },
         seen:{
             type: SQ.BOOLEAN,
             defaultValue: false
