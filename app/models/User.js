@@ -47,28 +47,28 @@ var User = sequelize.define('user', {
                 }
             }
 
-        }
-        ,
+        },
         avatar: {
             type: SQ.STRING,
             allowNull: {
                 args: false,
                 msg: 'Must have an avatar'
             }
-        }
-        ,
+        },
         salt: {
             type: SQ.STRING,
             allowNull: {
                 args: false
             }
-        }
-        ,
+        },
         hash: {
             type: SQ.STRING,
             allowNull: {
                 args: false
             }
+        },
+        facebookId: {
+            type: SQ.STRING
         }
     })
     ;

@@ -37,4 +37,13 @@ module.exports = function(app){
     app.use('/about', Authentication, aboutRouter);
     app.use('/message', Authentication, messageRouter);
     app.use('/friend', Authentication, friendRouter);
+
+    app.get('/login/facebook',
+        passport.authenticate('facebook'));
+
+    app.get('/login/facebook/callback',
+        passport.authenticate('facebook', { failureRedirect: '/login' } ),
+        function(req, res) {
+            res.redirect('/');
+        });
 };
