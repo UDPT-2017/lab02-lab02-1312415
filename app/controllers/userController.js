@@ -51,6 +51,9 @@ var userController = {
     logout: function(req,res){
         req.logout();
         res.redirect('/message');
+    },
+    loginFacebook: function(req, res) {
+        res.redirect('/');
     }
 };
 

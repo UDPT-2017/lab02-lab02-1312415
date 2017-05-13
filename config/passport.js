@@ -23,7 +23,7 @@ passport.deserializeUser(function (id, done) {
 passport.use(new facebookStrategy({
         clientID: process.env.CLIENT_ID || "349836925395288",
         clientSecret: process.env.CLIENT_SECRET || "b5ee947725a403390fc99413c1d3ca39",
-        callbackURL: 'http://localhost:3000/login/facebook/callback',
+        callbackURL: 'http://localhost:3000/user/login/facebook/callback',
         passReqToCallback: true,
         scope: ['user_friends'],
         profileFields: ['id', 'displayName', 'photos', 'email', 'friends']

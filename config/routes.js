@@ -5,7 +5,7 @@ const passport = require('../config/passport');
 const Authentication = require('../config/authencation');
 const multipartMiddleware = multipart();
 
-module.exports = function(app){
+module.exports = function (app) {
     var friendRouter = Router()
         .get('/add', controllers.friend.addFriend)
         .get('/remove', controllers.friend.removeFriend)
@@ -18,8 +18,10 @@ module.exports = function(app){
         .get('/login', controllers.user.loadLogin)
         .get('/register', controllers.user.loadRegister)
         .post('/register', multipartMiddleware, controllers.user.register)
-        .post('/login', passport.authenticate('local',{ failureRedirect: '/user/loginFail'}), controllers.user.login)
-        .post('/logout',controllers.user.logout);
+        .post('/login', passport.authenticate('local', {failureRedirect: '/user/loginFail'}), controllers.user.login)
+        .post('/logout', controllers.user.logout)
+        .get('/login/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' } ), controllers.user.loginFacebook)
+        .get('/login/facebook', passport.authenticate('facebook'));
 
     var aboutRouter = Router()
         .get('/', controllers.about.index);
@@ -29,7 +31,7 @@ module.exports = function(app){
         .get('/get', controllers.message.getMessage)
         .get('/sent', controllers.message.sentMessage)
         .get('/new', controllers.message.newMessage)
-        .post('/new',controllers.message.createMessage)
+        .post('/new', controllers.message.createMessage)
         .get('/:id', controllers.message.show);
 
     app.use('/', indexRouter);
@@ -38,12 +40,5 @@ module.exports = function(app){
     app.use('/message', Authentication, messageRouter);
     app.use('/friend', Authentication, friendRouter);
 
-    app.get('/login/facebook',
-        passport.authenticate('facebook'));
 
-    app.get('/login/facebook/callback',
-        passport.authenticate('facebook', { failureRedirect: '/login' } ),
-        function(req, res) {
-            res.redirect('/');
-        });
 };
