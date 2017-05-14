@@ -1,12 +1,12 @@
-# BT-UDPT-2 - *Name of your app*
+# BT-UDPT-2 - *Message*
 
-**Name of your app** là một bài tập 2 tại môn UDPT. Ứng dụng cho phép người dùng gửi tin nhắn (email) cho người dùng khác.
+**Message** là một bài tập 2 tại môn UDPT. Ứng dụng cho phép người dùng gửi tin nhắn (email) cho người dùng khác.
 
 Thành viên:
 * [x] **1312415** Trần Thanh Phán (1312415@github.com)
 * [ ] **MSSV2** Tên sinh viên 2 (tên tài khoản github)
 
-URL: **URL hosting của bài tập**
+URL: **https://agile-cliffs-48262.herokuapp.com/**
 
 ## Yêu cầu
 
