@@ -18,7 +18,7 @@ module.exports = function (app) {
         .get('/login', controllers.user.loadLogin)
         .get('/register', controllers.user.loadRegister)
         .post('/register', multipartMiddleware, controllers.user.register)
-        .post('/login', passport.authenticate('local', {failureRedirect: '/user/loginFail'}), controllers.user.login)
+        .post('/login', passport.authenticate('local', {failureRedirect: '/user/login'}), controllers.user.login)
         .post('/logout', controllers.user.logout)
         .get('/login/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' } ), controllers.user.loginFacebook)
         .get('/login/facebook', passport.authenticate('facebook'));
