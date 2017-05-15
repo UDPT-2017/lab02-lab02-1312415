@@ -6,7 +6,7 @@
 <script>
     function AddFriend(userId) {
         $.ajax({
-            url: 'http://localhost:3000/friend/add?id='+userId,
+            url: 'https://agile-cliffs-48262.herokuapp.com/friend/add?id='+userId,
             dataType: "json",
             cache: false,
             async: false,
@@ -20,7 +20,7 @@
     }
     function RemoveFriend(userId) {
         $.ajax({
-            url: 'http://localhost:3000/friend/remove?id='+userId,
+            url: 'https://agile-cliffs-48262.herokuapp.com/friend/remove?id='+userId,
             dataType: "json",
             cache: false,
             async: false,
@@ -37,7 +37,7 @@
         var $friendList = $('#friendList');
         $friendList.empty();
         $.ajax({
-            url: 'http://localhost:3000/friend/get',
+            url: 'https://agile-cliffs-48262.herokuapp.com/friend/get',
             dataType: "json",
             cache: false,
             async: false,

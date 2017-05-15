@@ -55,7 +55,7 @@
         var $message = $('#messageList');
         $message.empty();
         $.ajax({
-            url: 'http://localhost:3000/message/get?number=' + ReceivePaginate + '&&All=true',
+            url: 'https://agile-cliffs-48262.herokuapp.com/message/get?number=' + ReceivePaginate + '&&All=true',
             dataType: "json",
             cache: false,
             async: false,
@@ -79,7 +79,7 @@
         var $message = $('#messageList');
         $message.empty();
         $.ajax({
-            url: 'http://localhost:3000/message/sent?number=' + SentPaginate + '&&All=true',
+            url: 'https://agile-cliffs-48262.herokuapp.com/message/sent?number=' + SentPaginate + '&&All=true',
             dataType: "json",
             cache: false,
             async: false,
